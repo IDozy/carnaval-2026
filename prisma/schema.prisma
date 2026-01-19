@@ -1,0 +1,168 @@
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+// schema.prisma (MVP escalable)
+enum CoplaStatus {
+  PUBLICADA
+  OCULTA
+  ELIMINADA
+  PENDIENTE
+}
+
+enum ReportReason {
+  SPAM
+  OFENSIVO
+  ACOSO
+  COPYRIGHT
+  OTRO
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  username  String   @unique
+  name      String?
+  image     String?
+  role      String   @default("USER") // USER | ADMIN
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  coplas       Copla[]
+  likes        CoplaLike[]
+  bookmarks    CoplaBookmark[]
+  colecciones  Coleccion[]
+  reportes     Report[]
+}
+
+model Location {
+  id        String   @id @default(cuid())
+  country   String   @default("Perú") // luego multi-país si quieres
+  region    String   // "Cajamarca"
+  province  String?
+  district  String?
+  createdAt DateTime @default(now())
+
+  coplas Copla[]
+
+  @@index([region])
+  @@index([region, province, district])
+}
+
+model Copla {
+  id          String      @id @default(cuid())
+  slug        String      @unique
+  title       String?
+  text        String      // contenido principal
+  authorName  String?     // si no quieren usar usuario real
+  status      CoplaStatus @default(PENDIENTE)
+
+  // metadata
+  language    String?     // "es"
+  isSpicy     Boolean     @default(false) // filtro “picantes”
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  userId      String?
+  user        User?       @relation(fields: [userId], references: [id])
+
+  locationId  String?
+  location    Location?   @relation(fields: [locationId], references: [id])
+
+  tags        CoplaTag[]
+  likes       CoplaLike[]
+  bookmarks   CoplaBookmark[]
+  inColecciones ColeccionItem[]
+  reports     Report[]
+
+  @@index([status, createdAt])
+  @@index([locationId])
+}
+
+model Tag {
+  id    String @id @default(cuid())
+  name  String @unique // "amor", "yunza", "picardia", "cajamarca"
+  coplas CoplaTag[]
+}
+
+model CoplaTag {
+  coplaId String
+  tagId   String
+  copla   Copla @relation(fields: [coplaId], references: [id])
+  tag     Tag   @relation(fields: [tagId], references: [id])
+
+  @@id([coplaId, tagId])
+}
+
+model CoplaLike {
+  coplaId String
+  userId  String
+  copla   Copla @relation(fields: [coplaId], references: [id])
+  user    User  @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@id([coplaId, userId])
+  @@index([userId, createdAt])
+}
+
+model CoplaBookmark {
+  coplaId String
+  userId  String
+  copla   Copla @relation(fields: [coplaId], references: [id])
+  user    User  @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@id([coplaId, userId])
+}
+
+model Coleccion {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String?
+  isPublic    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+
+  items       ColeccionItem[]
+
+  @@index([userId, createdAt])
+}
+
+model ColeccionItem {
+  coleccionId String
+  coplaId     String
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  coleccion   Coleccion @relation(fields: [coleccionId], references: [id])
+  copla       Copla     @relation(fields: [coplaId], references: [id])
+
+  @@id([coleccionId, coplaId])
+  @@index([coleccionId, order])
+}
+
+model Report {
+  id        String       @id @default(cuid())
+  reason    ReportReason
+  details   String?
+  createdAt DateTime     @default(now())
+
+  coplaId   String
+  copla     Copla        @relation(fields: [coplaId], references: [id])
+
+  userId    String?
+  user      User?        @relation(fields: [userId], references: [id])
+
+  @@index([coplaId, createdAt])
+}

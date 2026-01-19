@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+:root {
+  --bg: 248 250 252;   /* slate-50 */
+  --card: 255 255 255;
+  --text: 24 24 27;    /* zinc-900 */
+
+  /* Colores carnaval */
+  --rojo: 239 68 68;
+  --amarillo: 251 191 36;
+  --verde: 34 197 94;
+  --azul: 59 130 246;
+  --morado: 101 3 84;
+}
+
+body {
+  background:
+    radial-gradient(800px 400px at 10% 0%, rgba(var(--amarillo), .20), transparent 60%),
+    radial-gradient(800px 400px at 90% 0%, rgba(var(--rojo), .18), transparent 60%),
+    radial-gradient(800px 400px at 20% 100%, rgba(var(--verde), .18), transparent 60%),
+    radial-gradient(800px 400px at 90% 100%, rgba(var(--azul), .16), transparent 60%),
+    rgb(var(--bg));
+  color: rgb(var(--text));
+}
+
+@layer components {
+  .container {
+    @apply mx-auto w-full max-w-6xl px-4;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold transition;
+  }
+
+  .btn-primary {
+    background: linear-gradient(
+      135deg,
+      rgb(var(--morado)),
+      rgb(var(--rojo)),
+      rgb(var(--amarillo))
+    );
+    @apply text-white shadow-md hover:opacity-95;
+  }
+
+  .btn-ghost {
+    @apply border border-zinc-200 bg-white hover:bg-zinc-50;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-3 py-1 text-xs text-zinc-700 shadow-sm;
+  }
+
+  .card {
+    @apply overflow-hidden rounded-3xl border border-zinc-200 bg-white;
+    box-shadow:
+      0 10px 30px rgba(0,0,0,.08),
+      0 2px 6px rgba(0,0,0,.04);
+  }
+}
