@@ -6,19 +6,13 @@ export default function Hero() {
         <section className="relative">
             {/* Imagen de fondo */}
             <div className="absolute inset-0 -z-10">
-                <Image
-                    src="/img/hero-cajamarca.jpg"
-                    alt="Carnaval Cajamarca"
-                    fill
-                    priority
-                    className="object-cover"
-                />
+                
                 {/* overlay más nítido + contraste */}
-                <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-white/35 to-white/90" />
+                <div className="absolute inset-0 " />
             </div>
 
             <div className="container py-14">
-                <div className="grid gap-6 lg:grid-cols-[1.2fr_.8fr] lg:items-stretch">
+                <div className="grid gap-6 ">
                     {/* caja principal */}
                     <div className="card p-6">
 
@@ -53,56 +47,6 @@ export default function Hero() {
                             />
                         </div>
                     </div>
-
-                    {/* panel lateral */}
-                    {/* panel lateral: recomendadas */}
-                    <div className="grid gap-4">
-                        <div className="card p-5">
-                            <div className="flex items-start justify-between gap-3">
-                                <div>
-                                    <div className="badge">⭐ Recomendadas de hoy</div>
-                                    <div className="mt-2 text-sm font-extrabold text-zinc-900">
-                                        Para empezar a cantar
-                                    </div>
-                                    <div className="text-sm text-zinc-700">
-                                        Tres coplas cortitas (click para ver detalle).
-                                    </div>
-                                </div>
-                                <div className="text-2xl">🎶</div>
-                            </div>
-
-                            <div className="mt-4 grid gap-3">
-                                <Link href="/c/copla-1" className="rounded-2xl border border-zinc-200 bg-white p-3 hover:bg-zinc-50">
-                                    <div className="text-xs font-semibold text-zinc-700">🔥 Picardía</div>
-                                    <div className="mt-1 line-clamp-2 text-sm font-semibold text-zinc-900">
-                                        Dicen que soy travieso, pero es pura tradición…
-                                    </div>
-                                </Link>
-
-                                <Link href="/c/copla-2" className="rounded-2xl border border-zinc-200 bg-white p-3 hover:bg-zinc-50">
-                                    <div className="text-xs font-semibold text-zinc-700">🎭 Comparsa</div>
-                                    <div className="mt-1 line-clamp-2 text-sm font-semibold text-zinc-900">
-                                        En Cajamarca yo canto con alegría y con razón…
-                                    </div>
-                                </Link>
-
-                                <Link href="/c/copla-3" className="rounded-2xl border border-zinc-200 bg-white p-3 hover:bg-zinc-50">
-                                    <div className="text-xs font-semibold text-zinc-700">🌳 Yunza</div>
-                                    <div className="mt-1 line-clamp-2 text-sm font-semibold text-zinc-900">
-                                        Baila, canta y no te asombres… que en febrero todo cambia…
-                                    </div>
-                                </Link>
-                            </div>
-
-                            <div className="mt-4 flex items-center justify-between">
-
-                                <Link href="/ranking" className="text-sm font-medium text-zinc-800 hover:underline">
-                                    Ver ranking →
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
-
 
                 </div>
             </div>
